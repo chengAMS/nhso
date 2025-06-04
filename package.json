@@ -1,0 +1,8 @@
+{
+  "name": "nhso-website",
+  "version": "1.0.0",
+  "description": "Sample nursing education personalized learning website",
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0"
+  }
+}
