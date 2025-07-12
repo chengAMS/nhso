@@ -38,28 +38,35 @@ class EmbeddingProcessor:
     def get_embeddings(self, texts: List[str]) -> List[np.ndarray]:
         """
         获取文本的嵌入向量
-        
+
+        智谱AI接口单次请求最多支持64条输入，为避免
+        `input数组最大不得超过64条` 的报错，此处根据批量
+        大小自动分批调用接口。
+
         Args:
             texts: 文本列表
-            
+
         Returns:
             嵌入向量列表
         """
         try:
-            # 调用智谱AI嵌入API
-            response = self.client.embeddings.create(
-                model="embedding-3",
-                input=texts
-            )
-            
-            # 提取嵌入向量
             embeddings = []
-            for data in response.data:
-                embedding = np.array(data.embedding, dtype=np.float32)
-                embeddings.append(embedding)
-            
+            batch_size = 64
+
+            for i in range(0, len(texts), batch_size):
+                batch = texts[i:i + batch_size]
+
+                response = self.client.embeddings.create(
+                    model="embedding-3",
+                    input=batch
+                )
+
+                for data in response.data:
+                    embedding = np.array(data.embedding, dtype=np.float32)
+                    embeddings.append(embedding)
+
             return embeddings
-            
+
         except Exception as e:
             raise Exception(f"嵌入生成失败: {str(e)}")
     
