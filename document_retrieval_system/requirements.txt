@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+python-multipart
+langchain
+langchain-text-splitters
+zhipuai
+geoopt
+torch
+numpy
+PyPDF2
+python-dotenv
+pydantic
+
